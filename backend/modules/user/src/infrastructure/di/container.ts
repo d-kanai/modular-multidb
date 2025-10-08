@@ -1,7 +1,7 @@
 import { UserRepository } from '../repositories/user.repository.impl.js';
-import { SignupUserUseCase } from '../../application/use-cases/signup-user.use-case.js';
-import { GetUserUseCase } from '../../application/use-cases/get-user.use-case.js';
-import { ActivateUserUseCase } from '../../application/use-cases/activate-user.use-case.js';
+import { SignupUserUseCase } from '../../application/commands/signup-user.command.js';
+import { GetUserUseCase } from '../../application/queries/get-user.query.js';
+import { ActivateUserUseCase } from '../../application/commands/activate-user.command.js';
 import { UserController } from '../../presentation/controllers/user.controller.js';
 import { EventController } from '../../presentation/controllers/event.controller.js';
 import { ScreeningPassedHandler } from '../../application/event-handlers/screening-passed.handler.js';

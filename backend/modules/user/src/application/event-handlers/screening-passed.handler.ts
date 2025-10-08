@@ -1,4 +1,4 @@
-import { ActivateUserUseCase } from '../use-cases/activate-user.use-case.js';
+import { ActivateUserUseCase } from '../commands/activate-user.command.js';
 
 export class ScreeningPassedHandler {
   constructor(private readonly activateUserUseCase: ActivateUserUseCase) {}
