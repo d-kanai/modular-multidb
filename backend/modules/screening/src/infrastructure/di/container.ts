@@ -1,9 +1,9 @@
 import { ScreeningRepository } from '../repositories/screening.repository.impl.js';
 import { UserApiClient } from '../external/user-api.client.js';
 import { HttpEventPublisher } from '../events/event-publisher.js';
-import { ApplyScreeningUseCase } from '../../application/use-cases/apply-screening.use-case.js';
-import { ListScreeningsUseCase } from '../../application/use-cases/list-screenings.use-case.js';
-import { PassScreeningUseCase } from '../../application/use-cases/pass-screening.use-case.js';
+import { ApplyScreeningUseCase } from '../../application/commands/apply-screening.command.js';
+import { ListScreeningsUseCase } from '../../application/queries/list-screenings.query.js';
+import { PassScreeningUseCase } from '../../application/commands/pass-screening.command.js';
 import { ScreeningController } from '../../presentation/controllers/screening.controller.js';
 
 // Infrastructure
