@@ -15,6 +15,10 @@
     "dev:all": "concurrently \"npm run dev:user\" \"npm run dev:screening\" \"npm run dev:customer\" \"npm run dev:admin\""
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "^0.85.0",
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "@hey-api/client-fetch": "^0.13.1"
   }
 }

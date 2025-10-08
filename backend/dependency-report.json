@@ -1,0 +1,11 @@
+{
+  "screening": {
+    "dependsOn": {
+      "user": [
+        "GET /api/users/:id (via UserApiClient.validateUserExists)",
+        "GET /api/users/:id (via UserApiClient.getUser)",
+        "GET /api/users/:id (via getUserById)"
+      ]
+    }
+  }
+}

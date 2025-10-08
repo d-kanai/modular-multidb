@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title: User Module API
+  version: 1.0.0
+  description: Internal API for User module
+
+servers:
+  - url: http://localhost:4000
+    description: Development server
+
+paths:
+  /api/users/{id}:
+    get:
+      operationId: getUser
+      summary: Get user by ID
+      description: Returns user information (internal API)
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: User ID
+        - name: X-Internal-Token
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Internal API token for inter-module communication
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+        '401':
+          description: Unauthorized - invalid internal token
+
+  /api/users:
+    post:
+      operationId: createUser
+      summary: Create a new user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - name
+        - status
+      properties:
+        id:
+          type: string
+          description: User ID
+        name:
+          type: string
+          description: User name
+        status:
+          type: string
+          enum: [active, inactive, suspended]
+          description: User status
+
+    CreateUserRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: User name
+
+  securitySchemes:
+    InternalToken:
+      type: apiKey
+      in: header
+      name: X-Internal-Token
+      description: Internal API token for inter-module communication

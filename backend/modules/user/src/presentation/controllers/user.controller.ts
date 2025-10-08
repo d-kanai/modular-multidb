@@ -1,6 +1,6 @@
 import { Context } from 'hono';
-import { SignupUserUseCase } from '../../application/use-cases/signup-user.use-case.js';
-import { GetUserUseCase } from '../../application/use-cases/get-user.use-case.js';
+import { SignupUserUseCase } from '../../application/commands/signup-user.command.js';
+import { GetUserUseCase } from '../../application/queries/get-user.query.js';
 
 export class UserController {
   constructor(

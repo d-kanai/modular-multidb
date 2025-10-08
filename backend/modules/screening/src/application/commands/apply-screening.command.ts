@@ -1,11 +1,14 @@
 import { IScreeningRepository } from '../../domain/repositories/screening.repository.js';
 import { Screening } from '../../domain/entities/screening.entity.js';
-import { UserApiClient } from '../../infrastructure/external/user-api.client.js';
+
+interface IUserApiClient {
+  getUser(userId: string): Promise<{ id: string; name: string; status: string } | null>;
+}
 
 export class ApplyScreeningUseCase {
   constructor(
     private readonly screeningRepository: IScreeningRepository,
-    private readonly userApiClient: UserApiClient
+    private readonly userApiClient: IUserApiClient
   ) {}
 
   async execute(userId: string): Promise<Screening> {
