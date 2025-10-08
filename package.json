@@ -1,0 +1,20 @@
+{
+  "name": "modular-multidb",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "backend/modules/*",
+    "customer-frontend",
+    "admin-frontend"
+  ],
+  "scripts": {
+    "dev:user": "npm run dev --workspace=backend/modules/user",
+    "dev:screening": "npm run dev --workspace=backend/modules/screening",
+    "dev:customer": "npm run dev --workspace=customer-frontend",
+    "dev:admin": "npm run dev --workspace=admin-frontend",
+    "dev:all": "concurrently \"npm run dev:user\" \"npm run dev:screening\" \"npm run dev:customer\" \"npm run dev:admin\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
