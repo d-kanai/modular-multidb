@@ -5,10 +5,10 @@ export class SignupUserUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
 
   async execute(name: string): Promise<User> {
-    if (!name || name.trim().length === 0) {
-      throw new Error('Name is required');
-    }
+    // Create user entity using factory method (includes validation and ID generation)
+    const user = User.signup(name);
 
-    return await this.userRepository.create(name);
+    // Save user entity
+    return await this.userRepository.save(user);
   }
 }

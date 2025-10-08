@@ -3,15 +3,18 @@ import { User, UserStatus } from '../../domain/entities/user.entity.js';
 import { prisma } from '../database/prisma.client.js';
 
 export class UserRepository implements IUserRepository {
-  async create(name: string): Promise<User> {
+  async save(user: User): Promise<User> {
     const userData = await prisma.user.create({
       data: {
-        name,
-        status: UserStatus.PENDING
+        id: user.id,
+        name: user.name,
+        status: user.status,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
       }
     });
 
-    return new User(
+    return User.reconstruct(
       userData.id,
       userData.name,
       userData.status as UserStatus,
@@ -29,7 +32,7 @@ export class UserRepository implements IUserRepository {
       return null;
     }
 
-    return new User(
+    return User.reconstruct(
       userData.id,
       userData.name,
       userData.status as UserStatus,
@@ -39,7 +42,7 @@ export class UserRepository implements IUserRepository {
   }
 
   async update(user: User): Promise<User> {
-    const userData = await prisma.user.update({
+    await prisma.user.update({
       where: { id: user.id },
       data: {
         status: user.status,
@@ -47,12 +50,7 @@ export class UserRepository implements IUserRepository {
       }
     });
 
-    return new User(
-      userData.id,
-      userData.name,
-      userData.status as UserStatus,
-      userData.createdAt,
-      userData.updatedAt
-    );
+    // Return the same entity instance to preserve domain events
+    return user;
   }
 }

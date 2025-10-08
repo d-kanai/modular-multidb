@@ -3,15 +3,18 @@ import { Screening, ScreeningStatus } from '../../domain/entities/screening.enti
 import { prisma } from '../database/prisma.client.js';
 
 export class ScreeningRepository implements IScreeningRepository {
-  async create(userId: string): Promise<Screening> {
+  async save(screening: Screening): Promise<Screening> {
     const screeningData = await prisma.screening.create({
       data: {
-        userId,
-        status: ScreeningStatus.PENDING
+        id: screening.id,
+        userId: screening.userId,
+        status: screening.status,
+        createdAt: screening.createdAt,
+        updatedAt: screening.updatedAt
       }
     });
 
-    return new Screening(
+    return Screening.reconstruct(
       screeningData.id,
       screeningData.userId,
       screeningData.status as ScreeningStatus,
@@ -29,7 +32,7 @@ export class ScreeningRepository implements IScreeningRepository {
       return null;
     }
 
-    return new Screening(
+    return Screening.reconstruct(
       screeningData.id,
       screeningData.userId,
       screeningData.status as ScreeningStatus,
@@ -43,7 +46,7 @@ export class ScreeningRepository implements IScreeningRepository {
       orderBy: { createdAt: 'desc' }
     });
 
-    return screeningsData.map(data => new Screening(
+    return screeningsData.map(data => Screening.reconstruct(
       data.id,
       data.userId,
       data.status as ScreeningStatus,
@@ -53,7 +56,7 @@ export class ScreeningRepository implements IScreeningRepository {
   }
 
   async update(screening: Screening): Promise<Screening> {
-    const screeningData = await prisma.screening.update({
+    await prisma.screening.update({
       where: { id: screening.id },
       data: {
         status: screening.status,
@@ -61,12 +64,7 @@ export class ScreeningRepository implements IScreeningRepository {
       }
     });
 
-    return new Screening(
-      screeningData.id,
-      screeningData.userId,
-      screeningData.status as ScreeningStatus,
-      screeningData.createdAt,
-      screeningData.updatedAt
-    );
+    // Return the same entity instance to preserve domain events
+    return screening;
   }
 }

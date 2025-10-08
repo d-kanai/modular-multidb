@@ -1,23 +1,17 @@
 import { IScreeningRepository } from '../../domain/repositories/screening.repository.js';
-import { IUserValidationService } from '../../domain/services/user-validation.service.js';
 import { Screening } from '../../domain/entities/screening.entity.js';
 
 export class ApplyScreeningUseCase {
-  constructor(
-    private readonly screeningRepository: IScreeningRepository,
-    private readonly userValidationService: IUserValidationService
-  ) {}
+  constructor(private readonly screeningRepository: IScreeningRepository) {}
 
   async execute(userId: string): Promise<Screening> {
-    if (!userId) {
-      throw new Error('UserId is required');
-    }
+    // Entity factory creates screening with domain event
+    const screening = Screening.apply(userId);
 
-    const userExists = await this.userValidationService.validateUserExists(userId);
-    if (!userExists) {
-      throw new Error(`User not found: ${userId}`);
-    }
+    // Save screening
+    const savedScreening = await this.screeningRepository.save(screening);
 
-    return await this.screeningRepository.create(userId);
+    // Domain events are automatically included in the entity
+    return savedScreening;
   }
 }

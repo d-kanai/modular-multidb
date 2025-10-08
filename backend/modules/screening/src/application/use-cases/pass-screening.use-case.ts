@@ -9,18 +9,32 @@ export class PassScreeningUseCase {
   ) {}
 
   async execute(screeningId: string): Promise<Screening> {
+    // Load screening
     const screening = await this.screeningRepository.findById(screeningId);
 
     if (!screening) {
       throw new Error(`Screening not found: ${screeningId}`);
     }
 
+    // State transition (generates domain event internally)
     screening.pass();
 
+    console.log('[PassScreeningUseCase] Domain events after pass():', screening.getDomainEvents());
+
+    // Update screening
     const updatedScreening = await this.screeningRepository.update(screening);
 
-    // Publish event to notify user module
-    await this.eventPublisher.publish('screening.passed', { userId: screening.userId });
+    console.log('[PassScreeningUseCase] Domain events after update():', updatedScreening.getDomainEvents());
+
+    // Publish domain events
+    const domainEvents = updatedScreening.getDomainEvents();
+    console.log('[PassScreeningUseCase] Publishing', domainEvents.length, 'events');
+    for (const event of domainEvents) {
+      await this.eventPublisher.publish(event.eventName, event.data);
+    }
+
+    // Clear events after publishing
+    updatedScreening.clearDomainEvents();
 
     return updatedScreening;
   }

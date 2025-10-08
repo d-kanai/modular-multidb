@@ -1,7 +1,7 @@
 export enum DomainEventName {
-  USER_SIGNED_UP = 'user.signed_up',
-  USER_ACTIVATED = 'user.activated',
-  USER_DEACTIVATED = 'user.deactivated',
+  SCREENING_APPLIED = 'screening.applied',
+  SCREENING_PASSED = 'screening.passed',
+  SCREENING_REJECTED = 'screening.rejected',
 }
 
 export interface DomainEvent {
