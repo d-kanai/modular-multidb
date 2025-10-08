@@ -1,7 +1,7 @@
 import { Context } from 'hono';
-import { ApplyScreeningUseCase } from '../../application/use-cases/apply-screening.use-case.js';
-import { ListScreeningsUseCase } from '../../application/use-cases/list-screenings.use-case.js';
-import { PassScreeningUseCase } from '../../application/use-cases/pass-screening.use-case.js';
+import { ApplyScreeningUseCase } from '../../application/commands/apply-screening.command.js';
+import { ListScreeningsUseCase } from '../../application/queries/list-screenings.query.js';
+import { PassScreeningUseCase } from '../../application/commands/pass-screening.command.js';
 
 export class ScreeningController {
   constructor(
@@ -19,6 +19,7 @@ export class ScreeningController {
       return c.json({
         id: screening.id,
         userId: screening.userId,
+        userName: screening.userName,
         status: screening.status,
         createdAt: screening.createdAt,
         updatedAt: screening.updatedAt
@@ -39,6 +40,7 @@ export class ScreeningController {
       return c.json(screenings.map(s => ({
         id: s.id,
         userId: s.userId,
+        userName: s.userName,
         status: s.status,
         createdAt: s.createdAt,
         updatedAt: s.updatedAt

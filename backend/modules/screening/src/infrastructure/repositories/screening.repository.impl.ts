@@ -8,6 +8,7 @@ export class ScreeningRepository implements IScreeningRepository {
       data: {
         id: screening.id,
         userId: screening.userId,
+        userName: screening.userName,
         status: screening.status,
         createdAt: screening.createdAt,
         updatedAt: screening.updatedAt
@@ -17,6 +18,7 @@ export class ScreeningRepository implements IScreeningRepository {
     return Screening.reconstruct(
       screeningData.id,
       screeningData.userId,
+      screeningData.userName,
       screeningData.status as ScreeningStatus,
       screeningData.createdAt,
       screeningData.updatedAt
@@ -35,6 +37,7 @@ export class ScreeningRepository implements IScreeningRepository {
     return Screening.reconstruct(
       screeningData.id,
       screeningData.userId,
+      screeningData.userName,
       screeningData.status as ScreeningStatus,
       screeningData.createdAt,
       screeningData.updatedAt
@@ -49,6 +52,7 @@ export class ScreeningRepository implements IScreeningRepository {
     return screeningsData.map(data => Screening.reconstruct(
       data.id,
       data.userId,
+      data.userName,
       data.status as ScreeningStatus,
       data.createdAt,
       data.updatedAt

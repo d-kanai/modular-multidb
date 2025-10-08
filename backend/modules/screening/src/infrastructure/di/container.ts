@@ -9,9 +9,10 @@ import { ScreeningController } from '../../presentation/controllers/screening.co
 // Infrastructure
 const screeningRepository = new ScreeningRepository();
 const eventPublisher = new HttpEventPublisher();
+const userApiClient = new UserApiClient();
 
 // Use Cases
-const applyScreeningUseCase = new ApplyScreeningUseCase(screeningRepository);
+const applyScreeningUseCase = new ApplyScreeningUseCase(screeningRepository, userApiClient);
 const listScreeningsUseCase = new ListScreeningsUseCase(screeningRepository);
 const passScreeningUseCase = new PassScreeningUseCase(screeningRepository, eventPublisher);
 

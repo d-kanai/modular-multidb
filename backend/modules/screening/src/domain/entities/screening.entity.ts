@@ -12,6 +12,7 @@ export class Screening extends DomainModel {
   private constructor(
     public readonly id: string,
     public readonly userId: string,
+    public readonly userName: string,
     private _status: ScreeningStatus,
     public readonly createdAt: Date,
     private _updatedAt: Date
@@ -34,25 +35,31 @@ export class Screening extends DomainModel {
     if (!this.userId || this.userId.trim().length === 0) {
       throw new Error('Screening must have a userId');
     }
+    if (!this.userName || this.userName.trim().length === 0) {
+      throw new Error('Screening must have a userName');
+    }
   }
 
   // ファクトリーメソッド: スクリーニング申請
-  static apply(userId: string): Screening {
+  static apply(userId: string, userName: string): Screening {
     if (!userId || userId.trim().length === 0) {
       throw new Error('UserId is required for screening application');
+    }
+    if (!userName || userName.trim().length === 0) {
+      throw new Error('UserName is required for screening application');
     }
 
     const id = this.generateId();
     const now = new Date();
 
     // 生成ルール: 新規スクリーニングは必ずPENDINGステータス
-    const screening = new Screening(id, userId, ScreeningStatus.PENDING, now, now);
+    const screening = new Screening(id, userId, userName, ScreeningStatus.PENDING, now, now);
 
     // Domain Event発行
     screening.addDomainEvent({
       eventName: DomainEventName.SCREENING_APPLIED,
       occurredOn: now,
-      data: { screeningId: id, userId }
+      data: { screeningId: id, userId, userName }
     });
 
     return screening;
@@ -62,11 +69,12 @@ export class Screening extends DomainModel {
   static reconstruct(
     id: string,
     userId: string,
+    userName: string,
     status: ScreeningStatus,
     createdAt: Date,
     updatedAt: Date
   ): Screening {
-    return new Screening(id, userId, status, createdAt, updatedAt);
+    return new Screening(id, userId, userName, status, createdAt, updatedAt);
   }
 
   // 状態遷移: 合格
